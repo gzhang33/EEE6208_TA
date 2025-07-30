@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>期末复习冲刺</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* --- 全局样式与设计哲学 --- */
+        :root {
+            --bg-color: #fdfbf7; /* 米白背景 */
+            --text-color: #333333; /* 深灰色文字 */
+            --primary-color: #4a5568; /* 主题色/导航栏背景 */
+            --accent-color: #718096; /* 辅色/悬停效果 */
+            --border-color: #e2e8f0; /* 边框颜色 */
+            --highlight-bg: #fff9c4; /* 重点突出背景色 */
+            --code-bg: #f7fafc; /* 代码/公式背景 */
+            --mastered-color: #48bb78; /* 已掌握 */
+            --review-color: #f6ad55; /* 需复习 */
+            --confused-color: #f56565; /* 未理解 */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            scroll-behavior: smooth;
+        }
+
+        /* --- 网站结构与布局 --- */
+        .container {
+            display: flex;
+        }
+
+        /* 左侧固定导航栏 */
+        .sidebar {
+            width: 280px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1000;
+            /* 默认隐藏 */
+            transform: translateX(-100%);
+            transition: transform 0.4s ease-in-out;
+        }
+        
+        /* JS控制此类来显示侧边栏 */
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        
+        .sidebar-header {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar nav li a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        /* 突出主要章节标题 */
+        .sidebar nav li a[href="#analogue-electronics"],
+        .sidebar nav li a[href="#digital-electronics"] {
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 700;
+            font-size: 1.1em;
+            margin: 10px 0;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar nav li a[href="#analogue-electronics"]:hover,
+        .sidebar nav li a[href="#digital-electronics"]:hover {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transform: translateX(8px);
+            box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+            color: white;
+        }
+        
+        .sidebar nav li a:hover {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            transform: translateX(3px);
+            box-shadow: 0 3px 12px rgba(72, 187, 120, 0.3);
+        }
+        
+        .sidebar nav li a.active {
+            background-color: var(--accent-color);
+        }
+        
+        .sidebar nav .sub-menu {
+            padding-left: 20px;
+        }
+        
+        .sidebar nav .sub-menu li a {
+            font-size: 0.9em;
+            padding: 8px 15px;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+            padding: 40px;
+            transition: margin-left 0.4s ease-in-out;
+        }
+        
+        .main-content h1 {
+            font-size: 2.8em;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-top: 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-content h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-top: 60px;
+            padding: 20px 0 15px 0;
+            border-bottom: 2px solid var(--accent-color);
+            position: relative;
+            font-weight: 600;
+        }
+        
+        .main-content h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-color) 0%, transparent 100%);
+            border-radius: 2px;
+        }
+        
+        .main-content h3 {
+            font-size: 1.6em;
+            color: var(--primary-color);
+            margin-top: 40px;
+            padding: 12px 0 8px 0;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(113, 128, 150, 0.05) 0%, transparent 50%);
+            font-weight: 600;
+        }
+        
+        /* --- 内容呈现样式 --- */
+        strong, .highlight {
+            background-color: var(--highlight-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 8px;
+        }
+        
+        /* h4 标题样式 */
+        .main-content h4 {
+            color: var(--accent-color);
+            font-size: 1.3em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted var(--accent-color);
+        }
+        
+        code, .formula-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            display: block;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.1em;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--code-bg);
+        }
+
+        /* --- 互动功能样式 --- */
+        
+        .collapsible {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            font-weight: bold;
+            color: var(--accent-color);
+            border-bottom: 2px dotted var(--accent-color);
+        }
+        
+        .collapsible-icon {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .collapsible-content {
+            display: none;
+            padding: 10px 0 10px 25px;
+            border-left: 3px solid var(--border-color);
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .mastery-controls {
+            display: inline-flex;
+            gap: 10px;
+            margin-left: 15px;
+            vertical-align: middle;
+        }
+
+        .mastery-icon {
+            cursor: pointer;
+            font-size: 1.4em;
+            opacity: 0.3;
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+        
+        .mastery-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .mastery-icon.selected {
+            opacity: 1;
+        }
+        
+        .quiz-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-button:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .quiz-container {
+            display: none; /* 默认隐藏，只在有内容时显示 */
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(247, 250, 252, 0.3); /* 更淡的背景 */
+            border: 1px solid rgba(226, 232, 240, 0.5); /* 更淡的边框 */
+            border-radius: 8px;
+            position: relative; /* 为刷新按钮提供定位基准 */
+        }
+        
+        /* 章节结束分隔栏 */
+        .section-divider {
+            margin: 60px 0 40px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--border-color) 20%, var(--accent-color) 50%, var(--border-color) 80%, transparent 100%);
+        }
+        
+        .section-divider::after {
+            content: '◆ ◆ ◆';
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            padding: 0 20px;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 章节容器控制 */
+        .section-container {
+            display: none;
+        }
+        
+        .section-container.active {
+            display: block;
+        }
+        
+        /* 章节导航按钮 */
+        .section-nav-button {
+            display: block;
+            margin: 40px auto 20px auto;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            min-width: 250px;
+        }
+        
+        .section-nav-button:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .section-nav-button:active {
+            transform: translateY(0);
+        }
+        
+        .quiz-item {
+            margin-bottom: 20px;
+        }
+        
+        .quiz-answer {
+            display: none;
+            margin-top: 10px;
+            padding-left: 15px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .show-answer-btn {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: 1px solid var(--accent-color);
+            background: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .quiz-refresh-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(113, 128, 150, 0.3);
+        }
+        
+        .quiz-refresh-btn:hover {
+            background-color: var(--primary-color);
+            transform: rotate(180deg);
+            box-shadow: 0 4px 12px rgba(113, 128, 150, 0.4);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1001;
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+
+        
+        /* 左侧触控条 */
+        .sidebar-trigger-strip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 25px;
+            height: 100vh;
+            z-index: 999;
+            background: linear-gradient(90deg, rgba(74, 85, 104, 0.1) 0%, rgba(74, 85, 104, 0.05) 70%, transparent 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            /* 添加视觉提示 */
+            background-image: 
+                radial-gradient(circle, rgba(74, 85, 104, 0.3) 1px, transparent 1px),
+                radial-gradient(circle, rgba(74, 85, 104, 0.2) 1px, transparent 1px);
+            background-size: 8px 20px, 8px 20px;
+            background-position: 8px 10px, 8px 30px;
+            background-repeat: repeat-y;
+        }
+        
+        .sidebar-trigger-strip:hover {
+            width: 30px;
+            background: linear-gradient(90deg, rgba(74, 85, 104, 0.2) 0%, rgba(74, 85, 104, 0.1) 70%, transparent 100%);
+        }
+        
+        /* 当侧边栏打开时隐藏触控条 */
+        .sidebar.open ~ .sidebar-trigger-strip {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 响应式布局 */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .main-content h1 { font-size: 2em; }
+            .main-content h2 { font-size: 1.8em; }
+            .main-content h3 { font-size: 1.4em; }
+        }
+
+        @media (min-width: 769px) {
+            /* 桌面端：侧边栏打开时，推开主内容区 */
+            .sidebar.open ~ .main-content {
+                margin-left: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">Digital & Analogue TA</div>
+            <nav id="table-of-contents"></nav>
+        </aside>
+
+        <!-- 左侧触控条 -->
+        <div class="sidebar-trigger-strip" id="sidebar-trigger-strip"></div>
+
+        <main class="main-content" id="main-content-area">
+            <h1>Digital & Analogue<br/>TA Review</h1>
+
+            <!-- 笔记内容将由JS动态插入此处 -->
+
+        </main>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <a href="#" class="back-to-top" id="back-to-top-btn">↑</a>
+
+    <script>
+    // ---------------------------------------------------------------
+    // ---------------------- 笔记内容数据源 -------------------------
+    // ---------------------------------------------------------------
+    const notesContent = `
+    <div class="section-container active" id="analogue-container">
+    <section id="analogue-electronics" class="quiz-section">
+        <h2>Analogue Electronics</h2>
+        <section id="mosfet-operating-states-output-voltage-swing">
+            <h3>MOSFET Operating States & Output Voltage Swing <div class="mastery-controls" data-id="mosfet-operating-states-output-voltage-swing"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <p>MOSFET有三种基本工作状态：</p>
+            <ul>
+                <li><strong>截止状态 (Off State)</strong> - 像关掉的开关，无电流通过</li>
+                <li><strong>线性状态 (Linear State)</strong> - 像可调电阻，电流由栅极电压控制</li>
+                <li><strong>饱和状态 (Saturation State)</strong> - 像稳定电流源，提供固定电流</li>
+            </ul>
+            <p><strong>注意</strong>：在饱和状态下存在<span class="collapsible"><span class="collapsible-icon">[+]</span>沟道长度调制效应(Channel Length Modulation)</span><span class="collapsible-content">使漏极电压增加时电流略微上升。</span>电流公式如下:</p>
+            <div class="formula-block">$$ I_D = \\frac{1}{2} \\mu_n C_{\\text{ox}} \\frac{W}{L} (V_{GS} - V_T)^2 (1 + \\lambda V_{DS}) $$</div>
+            <p><span class="collapsible"><span class="collapsible-icon">[+]</span>输出电压摆幅</span><span class="collapsible-content">定义为放大器在所有晶体管保持饱和区工作时的最大电压范围：</span></p>
+            <ul>
+                <li><strong>上限 (Vout,max)</strong>：由PMOS负载管进入三极管区限制，约为VDD−∣VOV,load∣</li>
+                <li><strong>下限 (Vout,min)</strong>：由NMOS对或尾电流源管进入三极管区限制，约为VOV,input+VOV,tail</li>
+            </ul>
+        </section>
+        <section id="basic-principles-of-differential-amplifiers">
+            <h3>Basic Principles of Differential Amplifiers <div class="mastery-controls" data-id="basic-principles-of-differential-amplifiers"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <h4>1. <span class="quiz-term">差模 (A_dm)</span></h4>
+            <ul>
+                <li><span class="quiz-definition" data-term="差模 (A_dm)的工作原理是什么？"><strong>工作原理</strong>：差分放大器的两个晶体管共用的源极点可以看作是"虚拟地"，这是因为电路是对称的。</span></li>
+                <li><span class="quiz-definition" data-term="差模 (A_dm)的简化分析方法是什么？"><strong>简化分析方法</strong>：我们可以只分析电路的一半，把它当作一个简单的共源放大器来理解，这样计算会更容易。</span></li>
+                <li><strong>放大能力</strong>：
+                    <ul>
+                        <li><span class="quiz-definition" data-term="什么是'单端输出增益'？">当我们只看一个输出端时，这叫做"单端输出增益"。</span></li>
+                        <li><span class="quiz-definition" data-term="什么是'差分输出增益'？">当我们看两个输出端的电压差时，这叫做"差分输出增益"。通常情况下，差分输出增益是单端输出增益的两倍。</span></li>
+                    </ul>
+                </li>
+            </ul>
+            <h4>2. <span class="quiz-term">共模 (A_cm)</span></h4>
+            <ul>
+                <li><span class="quiz-definition" data-term="共模 (A_cm)的工作原理是什么？"><strong>工作原理</strong>：当两个输入端收到相同的信号时（共模信号），尾电流源的电阻起着重要作用。这个电阻会产生负反馈效应，帮助抑制共模信号。</span></li>
+                <li><span class="quiz-definition" data-term="共模 (A_cm)的抑制效果如何？"><strong>抑制效果</strong>：放大器会大大减弱共模信号，这正是我们想要的效果。</span></li>
+                <li><span class="quiz-definition" data-term="共模 (A_cm)在差分输出时的表现是？"><strong>差分输出时的表现</strong>：当我们看两个输出端的差值时，理想情况下共模信号完全被消除（增益为零）。这是因为共模信号在两端产生完全相同的变化。</span></li>
+            </ul>
+            <h4>3. <span class="quiz-term">共模抑制比（CMRR）</span></h4>
+            <ul>
+                <li><span class="quiz-definition" data-term="共模抑制比（CMRR）的含义是什么？"><strong>含义</strong>：CMRR用来衡量放大器的品质，它表示放大器对有用信号（差分信号）的放大能力与对干扰信号（共模信号）的抑制能力之比。</span></li>
+            </ul>
+            <div class="formula-block">$$ CMRR=\\left|\\frac{A_{dm}}{A_{cm}}\\right| $$</div>
+            <ul>
+                 <li><span class="quiz-definition" data-term="CMRR的性能指标代表什么？"><strong>性能指标</strong>：CMRR越大说明性能越好。特别是在差分输出时，因为完全抑制了共模信号，理论上CMRR可以达到无限大。</span></li>
+            </ul>
+            <h4>放大器中两个关键晶体管的作用</h4>
+            <ul>
+                <li><span class="quiz-definition" data-term="M1晶体管在放大器中的作用是什么？"><strong>M1的工作：信号放大器</strong> M1负责接收并放大输入信号。它就像一个电压控制的开关，根据输入电压的变化来调节电流的大小。M1的跨导（gm1）决定了它能把多小的电压变化转换成多大的电流变化。</span></li>
+                <li><span class="quiz-definition" data-term="M3晶体管在放大器中的作用是什么？"><strong>M3的工作：电流转换器</strong> M3的任务是把M1产生的电流变化转换成电压变化。它的栅极电压是固定的，主要作用是提供一个很大的输出电阻。这个大电阻帮助我们获得更大的输出电压信号。</span></li>
+            </ul>
+        </section>
+        <section id="miller-effect">
+            <h3>Miller Effect <div class="mastery-controls" data-id="miller-effect"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">密勒效应</span></span><span class="collapsible-content quiz-definition" data-term="解释密勒效应">反相放大器中的输入-输出间电容(如CS放大器的Cgd)在输入端等效为更大的电容Cin,Miller=Cf(1−A_v)，因为Av为大负数。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">输入极点 (Input Pole)</span></span><span class="collapsible-content quiz-definition" data-term="解释输入极点">放大器频率响应受RC网络形成的极点限制，频率fp=1/(2πR_totalC_total)。</span></li>
+                <li><span class="quiz-definition" data-term="为什么共源放大器会受密勒效应影响？"><strong>共源 (Common Source, CS) 放大器</strong>: 栅漏间Cgd电容造成显著密勒效应，形成<strong>主极点</strong>限制带宽。</span></li>
+                <li><span class="quiz-definition" data-term="为什么共栅放大器没有密勒效应？"><strong>共栅 (Common Gate, CG) 放大器</strong>: 输入源极，输出漏极，栅接地，无输入输出间电容，因此<strong>无密勒效应</strong>，高频特性优于CS。</span></li>
+            </ul>
+        </section>
+        <section id="negative-feedback">
+            <h3>Negative Feedback <div class="mastery-controls" data-id="negative-feedback"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <ul>
+                <li><span class="quiz-definition" data-term="描述一种负反馈方式及其作用"><strong>反馈方式</strong>: 串联输入并联输出，提高输入电阻，降低输出电阻。</span></li>
+            </ul>
+            <h4>正反馈与负反馈的识别</h4>
+            <p>通过分析<strong>反馈信号对输入的影响</strong>来判断反馈类型：</p>
+            <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">负反馈</span></span><span class="collapsible-content quiz-definition" data-term="负反馈如何工作，有什么作用？">反馈信号<strong>抵消</strong>输入变化，降低有效输入。<strong>用于稳定电路</strong>。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">正反馈</span></span><span class="collapsible-content quiz-definition" data-term="正反馈如何工作，有什么作用？">反馈信号<strong>增强</strong>输入变化，提高有效输入。<strong>可能引起振荡</strong>。</span></li>
+            </ul>
+        </section>
+        
+        <!-- Analogue Electronics 主章节测验 -->
+        <button class="quiz-button">生成 Analogue Electronics 测验</button>
+        <div class="quiz-container"></div>
+        
+        <!-- 章节结束分隔栏 -->
+        <div class="section-divider"></div>
+    </section>
+    
+    <!-- 跳转到 Digital 章节的按钮 -->
+    <button class="section-nav-button" id="go-to-digital-btn">
+        进入 Digital Electronics 章节 →
+    </button>
+    </div>
+    
+    <div class="section-container" id="digital-container">
+    <!-- 返回 Analogue 章节的按钮 -->
+    <button class="section-nav-button" id="go-to-analogue-btn">
+        ← 返回 Analogue Electronics 章节
+    </button>
+    
+    <section id="digital-electronics" class="quiz-section">
+        <h2>Digital Electronics</h2>
+        <section id="logic-timing-power">
+            <h3>Logic, Timing & Power<div class="mastery-controls" data-id="logic-timing-power"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <h4>逻辑功方法论 (Method of Logical Effort)</h4>
+            <p>这是一种计算数字电路延迟的简单方法。它的主要优点是把复杂的延迟问题分解成几个简单的部分来分析。</p>
+            <p>我们用一个公式来表示电路的延迟：d = g⋅h + p</p>
+            <ul>
+                <li><strong>基本组成部分</strong>：
+                    <ul>
+                        <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">g（逻辑功, Logical Effort）</span></span><span class="collapsible-content quiz-definition" data-term="什么是逻辑功 (g)？">表示电路类型造成的延迟，比如NAND门和NOR门的固有差异</span></li>
+                        <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">h（电气功, Electrical Effort）</span></span><span class="collapsible-content quiz-definition" data-term="什么是电气功 (h)？">表示负载大小造成的延迟，简单说就是输出端连接的电容与输入电容的比值</span></li>
+                        <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">p（寄生延迟, Parasitic Delay）</span></span><span class="collapsible-content quiz-definition" data-term="什么是寄生延迟 (p)？">表示电路内部固有的延迟，这部分延迟与负载无关</span></li>
+                    </ul>
+                </li>
+                <li><strong>几个重要概念</strong>：
+                     <ul>
+                        <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">门功（effort delay, f）</span></span><span class="collapsible-content quiz-definition" data-term="什么是门功 (f)？">这是由负载引起的延迟，等于逻辑功与电气功的乘积（f = g⋅h）</span></li>
+                        <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">归一化延迟（Normalized Delay, d）</span></span><span class="collapsible-content quiz-definition" data-term="什么是归一化延迟 (d)？">这是电路的总延迟，用相对单位表示。它等于门功加上寄生延迟（d = f + p）</span></li>
+                        <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">实际延迟（propagation Delay, tpd）</span></span><span class="collapsible-content quiz-definition" data-term="什么是实际延迟 (tpd)？">如果要知道实际的延迟时间（以秒为单位），只需要把归一化延迟乘以一个与工艺相关的时间常数τ： tpd = d⋅τ</span></li>
+                    </ul>
+                </li>
+            </ul>
+             <h4>布尔代数三大定律总结表</h4>
+             <table>
+                <thead><tr><th><strong>吸收律</strong></th><th>公式</th><th>解释</th></tr></thead>
+                <tbody>
+                    <tr><td> </td><td>A+AB=A</td><td>如果已经有A，就不需要再加上包含A的项</td></tr>
+                    <tr><td> </td><td>A(A+B)=A</td><td>A与包含A的式子相乘，结果还是A</td></tr>
+                    <tr><td> </td><td>A+A′B=A+B</td><td>可以化简为A+B（A′表示非A）</td></tr>
+                </tbody>
+             </table>
+             <h4>开关功耗 (Switching Power)</h4>
+             <ul>
+                 <li><strong>开关功耗公式</strong>：开关功耗由以下公式表示：</li>
+             </ul>
+             <div class="formula-block">$$ P_{SW} = \\alpha \\cdot f \\cdot C_L \\cdot V_{DD}^2 $$</div>
+             <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span>公式参数解释</span><span class="collapsible-content"><ul><li>PSW：开关功耗 (Switching Power)，单位为瓦特 (W)。</li><li>α：<strong>活动因子 (Activity Factor)</strong>，表示每个时钟周期内发生充/放电转换的概率，是一个取值在0到1之间的无量纲参数。</li><li>f：时钟频率 (Clock Frequency)，单位为赫兹 (Hz)。</li><li>CL：负载电容 (Load Capacitance)，单位为法拉 (F)。</li><li>VDD：电源电压 (Supply Voltage)，单位为伏特 (V)。</li></ul></span></li>
+             </ul>
+             <h4>各种逻辑电路类型</h4>
+             <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Static Logic (静态逻辑)</span></span><span class="collapsible-content quiz-definition" data-term="什么是静态逻辑 (Static Logic)?">最基本的逻辑电路类型。不需要时钟信号控制，通过固定的上拉和下拉电路来保持输出稳定。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Pass Transistor Logic (传输晶体管逻辑)</span></span><span class="collapsible-content quiz-definition" data-term="什么是传输晶体管逻辑 (Pass Transistor Logic)?">使用晶体管作为简单的开关来传递信号。结构简单，但传输高电平信号时会有一定的衰减。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Pseudo-NMOS Logic (伪NMOS逻辑)</span></span><span class="collapsible-content quiz-definition" data-term="什么是伪NMOS逻辑 (Pseudo-NMOS Logic)?">一种简化版的静态逻辑电路。使用一个永久导通的上拉电阻，结构简单但会消耗一些静态功耗。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Ratioed Logic (有比逻辑)</span></span><span class="collapsible-content quiz-definition" data-term="什么是有比逻辑 (Ratioed Logic)?">输出结果取决于上拉和下拉晶体管的尺寸比例。可以想象成两个晶体管在"拔河"，谁更强就决定了输出是高还是低。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Dynamic Logic (动态逻辑)</span></span><span class="collapsible-content quiz-definition" data-term="什么是动态逻辑 (Dynamic Logic)?">使用时钟信号控制的电路。工作分两个阶段：首先预充电（把输出充到高电平），然后根据输入信号决定是保持高电平还是放电到低电平。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Domino Logic (多米诺逻辑)</span></span><span class="collapsible-content quiz-definition" data-term="什么是多米诺逻辑 (Domino Logic)?">动态逻辑的改进版本，在输出端加了一个信号翻转器，使电路能更好地串联工作。</span></li>
+             </ul>
+             <h4>时序延迟 (Timing Delays)</h4>
+             <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">污染延迟 (Contamination Delay, tcd)</span></span><span class="collapsible-content quiz-definition" data-term="什么是污染延迟 (tcd)?">信号传输的最短时间。也就是说，当输入变化后，输出最快需要多长时间就会开始变化。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">传输延迟 (Propagation Delay, tpd)</span></span><span class="collapsible-content quiz-definition" data-term="什么是传输延迟 (tpd)?">信号传输的最长时间。即当输入变化后，输出最慢需要多长时间才能完全稳定下来。</span></li>
+             </ul>
+        </section>
+        <section id="physical-design-verification">
+            <h3>Physical Design & Verification <div class="mastery-controls" data-id="physical-design-verification"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <h4>Post-layout Simulation 版图后仿真 & Extraction 提取</h4>
+            <ul>
+                <li><span class="quiz-definition" data-term="简述版图设计流程"><strong>Design Flow</strong>: Schematic Design → Layout Design → Extraction → Verification & Simulation</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">Extraction (提取)</span></span><span class="collapsible-content quiz-definition" data-term="什么是提取 (Extraction)?">CAD工具自动分析版图，识别电路元件和连接，生成<strong>网表 (netlist)</strong>。需要识别<strong>过孔 (vias)</strong>来理解电路连接。</span></li>
+                <li><span class="quiz-definition" data-term="什么是寄生参数 (Parasitic)?"><strong>Parasitic</strong>: 实际版图中会产生<strong>寄生电阻</strong>和<strong>寄生电容</strong> (parasitic resistance/capacitance)，这些是不可避免的。</span></li>
+                <li><strong>精确仿真 (Accurate Simulation)</strong>:
+                    <ul>
+                        <li><span class="quiz-definition" data-term="Pre-layout仿真的特点是什么？"><strong>Pre-layout</strong>: 基于理想电路图，快速但不精确。</span></li>
+                        <li><span class="quiz-definition" data-term="Post-layout仿真的特点是什么？"><strong>Post-layout</strong>: 包含寄生参数，结果更精确，更接近实际芯片性能。</span></li>
+                    </ul>
+                </li>
+            </ul>
+            <h4>核心版图技术 (Core Layout Techniques)</h4>
+            <ul>
+                <li><span class="quiz-definition" data-term="保护环 (Guard Ring) 的作用是？"><strong>Guard Ring (保护环)</strong>: 增加面积，用于防止闩锁效应(latch-up)。</span></li>
+                <li><span class="quiz-definition" data-term="H树或骨干网络 (H-Tree or Spine) 的作用是？"><strong>H-Tree or Spine (H树或骨干网络)</strong>: 用于减小时钟偏移(clock skew)。</span></li>
+                <li><span class="quiz-definition" data-term="条带状金属层 (Striped Metal Layers) 的作用是？"><strong>Striped Metal Layers (条带状金属层)</strong>: 用于均匀分布电源，减小IR压降。</span></li>
+                <li><span class="quiz-definition" data-term="增加走线宽度 (Increased track width) 的作用是？"><strong>Increased track width (增加走线宽度)</strong>: 用于降低电阻或提高载流能力。</span></li>
+                <li><span class="quiz-definition" data-term="折叠式版图 (Folded Layout) 的作用是？"><strong>Folded Layout (折叠式版图)</strong>: 显著<strong>减小单元面积</strong>。</span></li>
+            </ul>
+        </section>
+        <section id="design-for-testability-dft">
+            <h3>Design for Testability<div class="mastery-controls" data-id="design-for-testability-dft"><span class="mastery-icon" data-level="mastered">😊</span><span class="mastery-icon" data-level="review">🤔</span><span class="mastery-icon" data-level="confused">🤯</span></div></h3>
+            <h4>扫描路径 (Scan Path flip-flop)</h4>
+            <ol>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">实现静态特性 (Static Characteristics)</span></span><span class="collapsible-content quiz-definition" data-term="如何解决锁存器漏数据的问题来实现静态特性？"><strong>问题</strong>：锁存器用传输门时会漏数据。<br><strong>解决办法</strong>：加入反馈电路保持数据稳定。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">实现边沿触发 (Edge Sensitivity)</span></span><span class="collapsible-content quiz-definition" data-term="如何用锁存器实现边沿触发？"><strong>问题</strong>：普通锁存器数据更新不够精确。<br><strong>解决办法</strong>：用两级锁存器：<ul><li>高电平时：第一级收数据，第二级保持；</li><li>下降沿时：第一级锁数据，第二级更新。</li></ul></span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">防止电压冲击 (ESD Protection)</span></span><span class="collapsible-content quiz-definition" data-term="ESD保护电路如何工作？"><strong>功能</strong>：保护芯片引脚的电路。<br><strong>工作方式</strong>：<ul><li>在输入D处使用inverter；</li><li>高压时二极管导走过大电流。</li></ul></span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">提高工作速度 (减少建立时间) (Setup Time)</span></span><span class="collapsible-content quiz-definition" data-term="如何改进触发器以减少建立时间？"><strong>问题</strong>：MUX选择器使触发器变慢。<br><strong>改进方法</strong>：选择功能集成到传输门中提高速度。</span></li>
+            </ol>
+            <h4>"针床式测试" (Bed of Nails Test)</h4>
+             <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">基本概念</span></span><span class="collapsible-content quiz-definition" data-term="什么是'针床式测试'？">这是一种传统的测试方法，用来检查电路板上的元件是否焊接良好。测试时要用到一个带有很多测试针的装置，这些针会接触电路板上专门留出的测试点。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">缺点</span></span><span class="collapsible-content quiz-definition" data-term="'针床式测试'有什么缺点？">现在的芯片封装越来越密集（比如BGA封装），已经很难用这种方法测试了，所以才需要用边界扫描这样的新技术。</span></li>
+             </ul>
+            <h4>边界扫描 (Boundary Scan)</h4>
+             <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">测试难点</span></span><span class="collapsible-content quiz-definition" data-term="现代芯片测试的难点是什么？">现代芯片越做越小，用传统方法很难测试芯片之间的连接是否正常。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">解决方法</span></span><span class="collapsible-content quiz-definition" data-term="边界扫描如何解决测试难点？">在芯片的每个输入输出引脚旁边都加一个<strong>边界扫描单元 (boundary scan cell)</strong>。这些单元串成一条链，像一条绕着芯片核心的测试通路。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">工作方式</span></span><span class="collapsible-content quiz-definition" data-term="边界扫描的工作方式是怎样的？">我们通过一个标准的<strong>测试接口 (Test Access Port, TAP)</strong>就能检查芯片引脚是否工作正常，不需要直接接触芯片。</span></li>
+             </ul>
+            <h4>芯片自测试 (Built-In Self-Test, BIST)</h4>
+            <ul>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">主要实现</span></span><span class="collapsible-content quiz-definition" data-term="芯片自测试 (BIST) 的主要思想是什么？">让芯片能够<strong>"自己测试自己"</strong>，这样就不需要太多昂贵的外部测试设备。</span></li>
+                <li><span class="collapsible"><span class="collapsible-icon">[+]</span><span class="quiz-term">主要部分</span></span><span class="collapsible-content quiz-definition" data-term="芯片自测试 (BIST) 的主要组成部分是什么？"><ol><li><strong>测试信号发生器</strong>：自动产生测试用的信号。</li><li><strong>结果分析器</strong>：把测试结果转换成一个简单的数字特征码。</li></ol></span></li>
+                <li><span class="quiz-definition" data-term="什么是BILBO技术？"><strong>BILBO技术</strong>是一种特殊的自测试模块，它把多种测试功能集成在一起，能够自动完成测试并分析结果。</span></li>
+            </ul>
+        </section>
+        
+        <!-- Digital Electronics 主章节测验 -->
+        <button class="quiz-button">生成 Digital Electronics 测验</button>
+        <div class="quiz-container"></div>
+        
+        <!-- 章节结束分隔栏 -->
+        <div class="section-divider"></div>
+    </section>
+    </div>
+    `;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const mainContentArea = document.getElementById('main-content-area');
+        // 注入笔记内容
+        mainContentArea.innerHTML += notesContent;
+        
+        // ---------------------------------------------------------------
+        // ---------------------- 功能实现逻辑 ---------------------------
+        // ---------------------------------------------------------------
+
+        function generateTableOfContents() {
+            const tocContainer = document.getElementById('table-of-contents');
+            const mainContent = document.getElementById('main-content-area');
+            // 查找所有的section，包括隐藏容器中的
+            const topLevelSections = mainContent.querySelectorAll('section[id$="-electronics"]');
+            let tocHtml = '<ul>';
+
+            topLevelSections.forEach(section => {
+                const h2 = section.querySelector('h2');
+                if (!h2) return;
+
+                const h2Id = section.id;
+                const h2Title = h2.textContent;
+                tocHtml += `<li><a href="#${h2Id}" onclick="navigateToSection('${h2Id}')">${h2Title}</a>`;
+
+                const subSections = section.querySelectorAll('section');
+                if (subSections.length > 0) {
+                    tocHtml += '<ul class="sub-menu">';
+                    subSections.forEach(subSection => {
+                        const h3 = subSection.querySelector('h3');
+                        if (h3) {
+                            const h3Id = subSection.id;
+                            const h3Title = h3.firstChild.textContent.trim(); 
+                            tocHtml += `<li><a href="#${h3Id}" onclick="navigateToSection('${h3Id}')">${h3Title}</a></li>`;
+                        }
+                    });
+                    tocHtml += '</ul>';
+                }
+                tocHtml += '</li>';
+            });
+
+            tocHtml += '</ul>';
+            tocContainer.innerHTML = tocHtml;
+        }
+
+        function initializeCollapsibles() {
+            const collapsibles = document.querySelectorAll('.collapsible');
+            collapsibles.forEach(item => {
+                item.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.collapsible-icon');
+                    
+                    if (content.style.display === "block") {
+                        content.style.display = "none";
+                        icon.textContent = "[+]";
+                        icon.style.transform = "rotate(0deg)";
+                    } else {
+                        content.style.display = "block";
+                        icon.textContent = "[-]";
+                        icon.style.transform = "rotate(90deg)";
+                    }
+                });
+            });
+        }
+        
+        function initializeMasteryControls() {
+            const controls = document.querySelectorAll('.mastery-controls');
+            controls.forEach(control => {
+                const id = control.dataset.id;
+                const icons = control.querySelectorAll('.mastery-icon');
+                
+                const savedState = localStorage.getItem('mastery-' + id);
+                if (savedState) {
+                    const savedIcon = control.querySelector(`[data-level='${savedState}']`);
+                    if(savedIcon) savedIcon.classList.add('selected');
+                }
+                
+                icons.forEach(icon => {
+                    icon.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const level = this.dataset.level;
+                        icons.forEach(i => i.classList.remove('selected'));
+                        if (localStorage.getItem('mastery-' + id) === level) {
+                             localStorage.removeItem('mastery-' + id);
+                        } else {
+                            this.classList.add('selected');
+                            localStorage.setItem('mastery-' + id, level);
+                        }
+                    });
+                });
+            });
+        }
+
+        function initializeQuizButtons() {
+            const quizButtons = document.querySelectorAll('.quiz-button');
+            quizButtons.forEach(button => {
+                // 初始化按钮状态
+                button.dataset.state = 'generate';
+                
+                button.addEventListener('click', function() {
+                    const section = this.closest('.quiz-section');
+                    const quizContainer = section.querySelector('.quiz-container');
+                    
+                    if (this.dataset.state === 'generate') {
+                        // 生成测验
+                        generateQuizContent(section, this);
+                        this.textContent = '关闭测验';
+                        this.dataset.state = 'close';
+                    } else {
+                        // 关闭测验
+                        quizContainer.style.display = 'none';
+                        quizContainer.innerHTML = '';
+                        this.textContent = '生成本章测验';
+                        this.dataset.state = 'generate';
+                    }
+                });
+            });
+        }
+
+        function generateQuizContent(section, button) {
+            const quizContainer = section.querySelector('.quiz-container');
+            const terms = section.querySelectorAll('.quiz-definition');
+            
+            if (terms.length === 0) {
+                quizContainer.innerHTML = `
+                    <button class="quiz-refresh-btn" title="刷新测验">↻</button>
+                    <h4>本章自测</h4>
+                    <p>本章暂无测验题目。</p>
+                `;
+                quizContainer.style.display = 'block';
+                return;
+            }
+
+            const shuffledTerms = Array.from(terms).sort(() => 0.5 - Math.random());
+            const selectedTerms = shuffledTerms.slice(0, Math.min(shuffledTerms.length, 5)); 
+
+            let quizHtml = `
+                <button class="quiz-refresh-btn" title="刷新测验">↻</button>
+                <h4>本章自测</h4>
+            `;
+            selectedTerms.forEach((term, index) => {
+                const question = term.dataset.term || '请解释...';
+                const answer = term.innerHTML;
+                quizHtml += `
+                    <div class="quiz-item">
+                        <p>${index + 1}. ${question}
+                            <button class="show-answer-btn">显示答案</button>
+                        </p>
+                        <div class="quiz-answer">${answer}</div>
+                    </div>
+                `;
+            });
+            quizContainer.innerHTML = quizHtml;
+            quizContainer.style.display = 'block';
+
+            // 设置显示答案按钮事件
+            quizContainer.querySelectorAll('.show-answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const answerDiv = this.parentElement.nextElementSibling;
+                    answerDiv.style.display = 'block';
+                    this.style.display = 'none';
+                });
+            });
+
+            // 设置刷新按钮事件
+            const refreshBtn = quizContainer.querySelector('.quiz-refresh-btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    generateQuizContent(section, button);
+                });
+            }
+        }
+
+
+
+        // 章节切换功能
+        function showDigital() {
+            console.log('切换到Digital章节'); // 调试信息
+            const analogueContainer = document.getElementById('analogue-container');
+            const digitalContainer = document.getElementById('digital-container');
+            
+            if (analogueContainer && digitalContainer) {
+                analogueContainer.classList.remove('active');
+                digitalContainer.classList.add('active');
+                window.scrollTo(0, 0);
+                updateActiveNavigation('digital-electronics');
+            } else {
+                console.error('无法找到容器元素');
+            }
+        }
+
+        function showAnalogue() {
+            console.log('切换到Analogue章节'); // 调试信息
+            const analogueContainer = document.getElementById('analogue-container');
+            const digitalContainer = document.getElementById('digital-container');
+            
+            if (analogueContainer && digitalContainer) {
+                digitalContainer.classList.remove('active');
+                analogueContainer.classList.add('active');
+                window.scrollTo(0, 0);
+                updateActiveNavigation('analogue-electronics');
+            } else {
+                console.error('无法找到容器元素');
+            }
+        }
+
+        function updateActiveNavigation(sectionId) {
+            // 更新导航栏当前激活状态
+            const navLinks = document.querySelectorAll('#table-of-contents a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function navigateToSection(sectionId) {
+            // 导航点击处理函数
+            if (sectionId === 'analogue-electronics' || sectionId.includes('mosfet') || 
+                sectionId.includes('differential') || sectionId.includes('miller') || 
+                sectionId.includes('negative-feedback')) {
+                // 属于analogue章节
+                if (!document.getElementById('analogue-container').classList.contains('active')) {
+                    showAnalogue();
+                }
+            } else if (sectionId === 'digital-electronics' || sectionId.includes('logic') || 
+                       sectionId.includes('physical') || sectionId.includes('testability')) {
+                // 属于digital章节
+                if (!document.getElementById('digital-container').classList.contains('active')) {
+                    showDigital();
+                }
+            }
+            
+            // 延迟滚动，确保章节已经显示
+            setTimeout(() => {
+                const targetElement = document.getElementById(sectionId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                updateActiveNavigation(sectionId);
+            }, 100);
+        }
+
+        function initializeBackToTopButton() {
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+        }
+        
+        function initializeActiveNavHighlighting() {
+             const sections = document.querySelectorAll('main section[id]');
+             const navLinks = document.querySelectorAll('#table-of-contents a');
+
+             const observer = new IntersectionObserver((entries) => {
+                 entries.forEach(entry => {
+                     if (entry.isIntersecting) {
+                         navLinks.forEach(link => {
+                             link.classList.remove('active');
+                             if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                 link.classList.add('active');
+                             }
+                         });
+                     }
+                 });
+             }, { rootMargin: "-50% 0px -50% 0px" });
+
+             sections.forEach(section => {
+                 observer.observe(section);
+             });
+        }
+
+        /**
+         * 功能7: 侧边栏行为初始化
+         * [UPDATED] 整合了桌面端悬停和移动端点击两种行为
+         */
+                 function initializeSectionNavigation() {
+            // 初始化章节跳转按钮
+            const goToDigitalBtn = document.getElementById('go-to-digital-btn');
+            const goToAnalogueBtn = document.getElementById('go-to-analogue-btn');
+            
+            if (goToDigitalBtn) {
+                goToDigitalBtn.addEventListener('click', showDigital);
+            }
+            
+            if (goToAnalogueBtn) {
+                goToAnalogueBtn.addEventListener('click', showAnalogue);
+            }
+        }
+
+         function initializeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const triggerStrip = document.getElementById('sidebar-trigger-strip');
+            const mainContent = document.getElementById('main-content-area');
+
+            // 移动端：点击触控条展开
+            triggerStrip.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.add('open');
+                }
+            });
+
+            // 桌面端：悬停触控条显示
+            triggerStrip.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.add('open');
+                }
+            });
+
+            // 桌面端：鼠标移开侧边栏后隐藏
+            sidebar.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('open');
+                }
+            });
+
+            // 移动端：点击主内容区隐藏
+            mainContent.addEventListener('click', () => {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                }
+            });
+
+            // 移动端：点击导航链接隐藏
+            sidebar.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                     if (window.innerWidth <= 768) {
+                        sidebar.classList.remove('open');
+                     }
+                     // 阻止默认锚点跳转，使用自定义导航
+                     e.preventDefault();
+                     const href = link.getAttribute('href');
+                     if (href && href.startsWith('#')) {
+                         const sectionId = href.substring(1);
+                         navigateToSection(sectionId);
+                     }
+                });
+            });
+        }
+
+        // ---------------------------------------------------------------
+        // ---------------------- 初始化所有功能 -------------------------
+        // ---------------------------------------------------------------
+        
+        generateTableOfContents();
+        initializeCollapsibles();
+        initializeMasteryControls();
+        initializeQuizButtons();
+        initializeBackToTopButton();
+        initializeActiveNavHighlighting();
+        initializeSidebar(); // 更新了此函数调用
+        initializeSectionNavigation(); // 初始化章节导航按钮
+
+        // 渲染 LaTeX 公式
+        if (window.MathJax) {
+            window.MathJax.typeset();
+        }
+    });
+    </script>
+</body>
+</html>
+
