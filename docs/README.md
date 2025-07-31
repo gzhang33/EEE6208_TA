@@ -72,11 +72,18 @@ A comprehensive, interactive study guide for the EEE6208 Digital & Analogue Elec
 ```
 EEE6208_TA/
 ├── index.html              # Main application entry point
-├── styles.css              # Comprehensive CSS with variables and animations
-├── app.js                  # Core application logic and state management
-├── config.js               # MathJax configuration and language data
-├── content.js              # Bilingual content definitions
-└── README.md              # This file
+├── src/
+│   ├── css/
+│   │   └── styles.css      # Comprehensive CSS with variables and animations
+│   └── js/
+│       ├── app.js          # Core application logic and state management
+│       ├── config.js       # MathJax configuration and language data
+│       └── content.js      # Bilingual content definitions
+├── docs/
+│   ├── README.md           # English documentation
+│   ├── README-zh.md        # Chinese documentation
+│   └── LICENSE             # MIT License
+└── .github/                # GitHub Actions workflow
 ```
 
 ### Technology Stack

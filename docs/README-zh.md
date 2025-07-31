@@ -72,11 +72,18 @@
 ```
 EEE6208_TA/
 ├── index.html              # 主应用程序入口点
-├── styles.css              # 包含变量和动画的综合CSS
-├── app.js                  # 核心应用程序逻辑和状态管理
-├── config.js               # MathJax配置和语言数据
-├── content.js              # 双语内容定义
-└── README.md              # 本文件
+├── src/
+│   ├── css/
+│   │   └── styles.css      # 包含变量和动画的综合CSS
+│   └── js/
+│       ├── app.js          # 核心应用程序逻辑和状态管理
+│       ├── config.js       # MathJax配置和语言数据
+│       └── content.js      # 双语内容定义
+├── docs/
+│   ├── README.md           # 英文文档
+│   ├── README-zh.md        # 中文文档
+│   └── LICENSE             # MIT许可证
+└── .github/                # GitHub Actions工作流
 ```
 
 ### 技术栈
