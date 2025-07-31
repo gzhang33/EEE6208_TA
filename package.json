@@ -1,0 +1,61 @@
+{
+  "name": "eee6208-electronics-study-guide",
+  "version": "2.0.0",
+  "description": "Interactive study guide for EEE6208 Digital & Analogue Electronics course with bilingual support",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000",
+    "serve-node": "npx serve .",
+    "build": "echo 'No build process required for static site'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linting configured'",
+    "format": "echo 'No formatting configured'",
+    "clean": "echo 'Project cleaned and ready for deployment'"
+  },
+  "keywords": [
+    "electronics",
+    "education",
+    "study-guide",
+    "digital-electronics",
+    "analogue-electronics",
+    "EEE6208",
+    "interactive",
+    "bilingual",
+    "mathjax",
+    "responsive"
+  ],
+  "author": "EEE6208 TA Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/EEE6208_equations.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/EEE6208_equations/issues"
+  },
+  "homepage": "https://github.com/your-username/EEE6208_equations#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {},
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "files": [
+    "index.html",
+    "styles.css",
+    "app.js",
+    "config.js",
+    "content.js",
+    "README.md",
+    "README-zh.md",
+    "LICENSE",
+    ".gitignore"
+  ]
+} 
