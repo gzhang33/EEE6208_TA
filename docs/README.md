@@ -3,6 +3,7 @@
 [View Chinese Version](README-zh.md)
 
 A comprehensive, interactive study guide for the EEE6208 Digital & Analogue Electronics course, featuring bilingual support, interactive quizzes, and mastery tracking.
+You can check the online version here: https://gzhang33.github.io/EEE6208_TA/
 
 ## Features
 
